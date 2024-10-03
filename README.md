@@ -446,130 +446,8 @@ for column in mba.columns:
     print(f"Value counts pada kolom '{column}':")
     print(mba[column].value_counts(), "\n")
 ```
-output yang dikeluarkan :
-Value counts pada kolom 'application_id':
-application_id
-1       1
-4162    1
-4136    1
-4135    1
-4134    1
-       ..
-2063    1
-2062    1
-2061    1
-2060    1
-6194    1
-Name: count, Length: 6194, dtype: int64 
 
-Value counts pada kolom 'gender':
-gender
-Male      3943
-Female    2251
-Name: count, dtype: int64 
-
-Value counts pada kolom 'international':
-international
-False    4352
-True     1842
-Name: count, dtype: int64 
-
-Value counts pada kolom 'gpa':
-gpa
-3.24    192
-3.21    170
-3.26    165
-3.27    165
-3.29    162
-       ... 
-2.73      1
-2.81      1
-2.79      1
-3.69      1
-2.65      1
-Name: count, Length: 101, dtype: int64 
-
-Value counts pada kolom 'major':
-major
-Humanities    2481
-STEM          1875
-Business      1838
-Name: count, dtype: int64 
-
-Value counts pada kolom 'race':
-race
-White       3298
-Asian       1147
-Black        916
-Hispanic     596
-Other        237
-Name: count, dtype: int64 
-
-Value counts pada kolom 'gmat':
-gmat
-660.0    483
-670.0    454
-650.0    451
-640.0    444
-620.0    439
-570.0    422
-630.0    417
-680.0    399
-610.0    381
-690.0    329
-600.0    313
-700.0    280
-590.0    260
-710.0    251
-580.0    212
-720.0    193
-730.0    125
-740.0    107
-750.0     78
-780.0     65
-760.0     60
-770.0     31
-Name: count, dtype: int64 
-
-Value counts pada kolom 'work_exp':
-work_exp
-5.0    2419
-6.0    1528
-4.0    1437
-3.0     369
-7.0     367
-8.0      38
-2.0      32
-9.0       2
-1.0       2
-Name: count, dtype: int64 
-
-Value counts pada kolom 'work_industry':
-work_industry
-Consulting               1619
-PE/VC                     907
-Technology                716
-Nonprofit/Gov             651
-Investment Banking        580
-Financial Services        451
-Other                     421
-Health Care               334
-Investment Management     166
-CPG                       114
-Real Estate               111
-Media/Entertainment        59
-Retail                     33
-Energy                     32
-Name: count, dtype: int64 
-
-Value counts pada kolom 'admission':
-admission
-decline     5194
-Admit        900
-Waitlist     100
-Name: count, dtype: int64 
-
-### Memvisualisasikan Nilai Unik Pada Kolom Race dan Gender
+## 4. Memvisualisasikan Nilai Unik Pada Kolom Race dan Gender
 ```python
 # Visualisasi nilai unik pada kolom 'race' menggunakan count plot
 plt.figure(figsize=(8, 6))
@@ -591,7 +469,7 @@ output yang dikeluarkan :
 ![image](https://github.com/user-attachments/assets/658ef3a5-3a71-43eb-b81e-0738defbb07d)
 ![image](https://github.com/user-attachments/assets/1687dfac-b670-4015-b98c-d9323185b4d6)
 
-## Menemukan null values
+## 5. Menemukan null values
 
 ```python
 mba.isnull().sum()
@@ -610,4 +488,583 @@ mba.isnull().sum()
 ### dtype: int64
 
 ### kolom dengan nilai kosong ada 2, yaitu Race dan Admission
+
+## 6. Handle Missing Value
+Disini saya menghandle missing value dengan mengambil modus dari kolom race dan mengubah null pada kolom admission menjadi decline
+### Contoh Kode
+```python
+mode_race = mba['race'].mode()[0]  # Mengambil modus dari kolom 'race'
+mba['race'] = mba['race'].fillna(mode_race)
+
+mba['admission'] = mba['admission'].fillna('decline')
+
+mba
+```
+output yang dihasilkan :
+<div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>application_id</th>
+      <th>gender</th>
+      <th>international</th>
+      <th>gpa</th>
+      <th>major</th>
+      <th>race</th>
+      <th>gmat</th>
+      <th>work_exp</th>
+      <th>work_industry</th>
+      <th>admission</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>Female</td>
+      <td>False</td>
+      <td>3.30</td>
+      <td>Business</td>
+      <td>Asian</td>
+      <td>620.0</td>
+      <td>3.0</td>
+      <td>Financial Services</td>
+      <td>Admit</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>Male</td>
+      <td>False</td>
+      <td>3.28</td>
+      <td>Humanities</td>
+      <td>Black</td>
+      <td>680.0</td>
+      <td>5.0</td>
+      <td>Investment Management</td>
+      <td>decline</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>Female</td>
+      <td>True</td>
+      <td>3.30</td>
+      <td>Business</td>
+      <td>White</td>
+      <td>710.0</td>
+      <td>5.0</td>
+      <td>Technology</td>
+      <td>Admit</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>Male</td>
+      <td>False</td>
+      <td>3.47</td>
+      <td>STEM</td>
+      <td>Black</td>
+      <td>690.0</td>
+      <td>6.0</td>
+      <td>Technology</td>
+      <td>decline</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5</td>
+      <td>Male</td>
+      <td>False</td>
+      <td>3.35</td>
+      <td>STEM</td>
+      <td>Hispanic</td>
+      <td>590.0</td>
+      <td>5.0</td>
+      <td>Consulting</td>
+      <td>decline</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>6189</th>
+      <td>6190</td>
+      <td>Male</td>
+      <td>False</td>
+      <td>3.49</td>
+      <td>Business</td>
+      <td>White</td>
+      <td>640.0</td>
+      <td>5.0</td>
+      <td>Other</td>
+      <td>decline</td>
+    </tr>
+    <tr>
+      <th>6190</th>
+      <td>6191</td>
+      <td>Male</td>
+      <td>False</td>
+      <td>3.18</td>
+      <td>STEM</td>
+      <td>Black</td>
+      <td>670.0</td>
+      <td>4.0</td>
+      <td>Consulting</td>
+      <td>decline</td>
+    </tr>
+    <tr>
+      <th>6191</th>
+      <td>6192</td>
+      <td>Female</td>
+      <td>True</td>
+      <td>3.22</td>
+      <td>Business</td>
+      <td>White</td>
+      <td>680.0</td>
+      <td>5.0</td>
+      <td>Health Care</td>
+      <td>Admit</td>
+    </tr>
+    <tr>
+      <th>6192</th>
+      <td>6193</td>
+      <td>Male</td>
+      <td>True</td>
+      <td>3.36</td>
+      <td>Business</td>
+      <td>White</td>
+      <td>590.0</td>
+      <td>5.0</td>
+      <td>Other</td>
+      <td>decline</td>
+    </tr>
+    <tr>
+      <th>6193</th>
+      <td>6194</td>
+      <td>Male</td>
+      <td>False</td>
+      <td>3.23</td>
+      <td>STEM</td>
+      <td>Hispanic</td>
+      <td>650.0</td>
+      <td>4.0</td>
+      <td>Consulting</td>
+      <td>decline</td>
+    </tr>
+  </tbody>
+</table>
+<p>6194 rows × 10 columns</p>
+</div>
+
+## 7. Mengetahui tipe data dari dataset yang sedang dieksplorasi agar mudah diakses
+### Contoh Kode
+```python
+mba.dtypes
+```
+### ouput yang dikeluarkan :
+### application_id      int64
+### gender             object
+### international        bool
+### gpa               float64
+### major              object
+### race               object
+### gmat              float64
+### work_exp          float64
+### work_industry      object
+### admission          object
+### dtype: object
+### bisa terlihat bahwa semua tipe data sudah sesuai 
+
+## 8. FIlter Data
+### Contoh Kode
+```python
+# Filter data menjadi hanya menampilkan mahasiswa yang memiliki skor GMAT di atas 650
+filtered_gmat = mba[mba['gmat'] > 650]
+filtered_gmat
+```
+<div>
+
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>application_id</th>
+      <th>gender</th>
+      <th>international</th>
+      <th>gpa</th>
+      <th>major</th>
+      <th>race</th>
+      <th>gmat</th>
+      <th>work_exp</th>
+      <th>work_industry</th>
+      <th>admission</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>Male</td>
+      <td>False</td>
+      <td>3.28</td>
+      <td>Humanities</td>
+      <td>Black</td>
+      <td>680.0</td>
+      <td>5.0</td>
+      <td>Investment Management</td>
+      <td>decline</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>Female</td>
+      <td>True</td>
+      <td>3.30</td>
+      <td>Business</td>
+      <td>White</td>
+      <td>710.0</td>
+      <td>5.0</td>
+      <td>Technology</td>
+      <td>Admit</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>Male</td>
+      <td>False</td>
+      <td>3.47</td>
+      <td>STEM</td>
+      <td>Black</td>
+      <td>690.0</td>
+      <td>6.0</td>
+      <td>Technology</td>
+      <td>decline</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>10</td>
+      <td>Male</td>
+      <td>False</td>
+      <td>3.27</td>
+      <td>Humanities</td>
+      <td>Asian</td>
+      <td>690.0</td>
+      <td>3.0</td>
+      <td>Consulting</td>
+      <td>decline</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>14</td>
+      <td>Female</td>
+      <td>False</td>
+      <td>3.39</td>
+      <td>Business</td>
+      <td>Black</td>
+      <td>690.0</td>
+      <td>4.0</td>
+      <td>Nonprofit/Gov</td>
+      <td>decline</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>6181</th>
+      <td>6182</td>
+      <td>Male</td>
+      <td>False</td>
+      <td>3.48</td>
+      <td>Humanities</td>
+      <td>Asian</td>
+      <td>710.0</td>
+      <td>5.0</td>
+      <td>Media/Entertainment</td>
+      <td>decline</td>
+    </tr>
+    <tr>
+      <th>6183</th>
+      <td>6184</td>
+      <td>Female</td>
+      <td>False</td>
+      <td>3.06</td>
+      <td>Humanities</td>
+      <td>Black</td>
+      <td>660.0</td>
+      <td>5.0</td>
+      <td>Nonprofit/Gov</td>
+      <td>decline</td>
+    </tr>
+    <tr>
+      <th>6185</th>
+      <td>6186</td>
+      <td>Male</td>
+      <td>False</td>
+      <td>3.19</td>
+      <td>STEM</td>
+      <td>Asian</td>
+      <td>660.0</td>
+      <td>4.0</td>
+      <td>Health Care</td>
+      <td>decline</td>
+    </tr>
+    <tr>
+      <th>6190</th>
+      <td>6191</td>
+      <td>Male</td>
+      <td>False</td>
+      <td>3.18</td>
+      <td>STEM</td>
+      <td>Black</td>
+      <td>670.0</td>
+      <td>4.0</td>
+      <td>Consulting</td>
+      <td>decline</td>
+    </tr>
+    <tr>
+      <th>6191</th>
+      <td>6192</td>
+      <td>Female</td>
+      <td>True</td>
+      <td>3.22</td>
+      <td>Business</td>
+      <td>White</td>
+      <td>680.0</td>
+      <td>5.0</td>
+      <td>Health Care</td>
+      <td>Admit</td>
+    </tr>
+  </tbody>
+</table>
+<p>2855 rows × 10 columns</p>
+</div>
+output dari code tersebut menghasilkan mahasiswa yang memiliki nilai skor GMAT diatas 650
+
+### Contoh kode
+```python
+# Filter data menjadi hanya menampilkan mahasiswa yang diterima (admit)
+accepted_students = mba[mba['admission'] == 'Admit']
+accepted_students
+```
+<div>
+
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>application_id</th>
+      <th>gender</th>
+      <th>international</th>
+      <th>gpa</th>
+      <th>major</th>
+      <th>race</th>
+      <th>gmat</th>
+      <th>work_exp</th>
+      <th>work_industry</th>
+      <th>admission</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>Female</td>
+      <td>False</td>
+      <td>3.30</td>
+      <td>Business</td>
+      <td>Asian</td>
+      <td>620.0</td>
+      <td>3.0</td>
+      <td>Financial Services</td>
+      <td>Admit</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>Female</td>
+      <td>True</td>
+      <td>3.30</td>
+      <td>Business</td>
+      <td>White</td>
+      <td>710.0</td>
+      <td>5.0</td>
+      <td>Technology</td>
+      <td>Admit</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>7</td>
+      <td>Female</td>
+      <td>False</td>
+      <td>2.93</td>
+      <td>STEM</td>
+      <td>Other</td>
+      <td>590.0</td>
+      <td>3.0</td>
+      <td>Technology</td>
+      <td>Admit</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>15</td>
+      <td>Female</td>
+      <td>False</td>
+      <td>3.03</td>
+      <td>STEM</td>
+      <td>White</td>
+      <td>600.0</td>
+      <td>5.0</td>
+      <td>Technology</td>
+      <td>Admit</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>16</td>
+      <td>Female</td>
+      <td>True</td>
+      <td>3.05</td>
+      <td>Humanities</td>
+      <td>White</td>
+      <td>710.0</td>
+      <td>4.0</td>
+      <td>Consulting</td>
+      <td>Admit</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>6152</th>
+      <td>6153</td>
+      <td>Female</td>
+      <td>False</td>
+      <td>3.31</td>
+      <td>Business</td>
+      <td>Black</td>
+      <td>690.0</td>
+      <td>3.0</td>
+      <td>Other</td>
+      <td>Admit</td>
+    </tr>
+    <tr>
+      <th>6168</th>
+      <td>6169</td>
+      <td>Female</td>
+      <td>False</td>
+      <td>3.21</td>
+      <td>STEM</td>
+      <td>White</td>
+      <td>680.0</td>
+      <td>5.0</td>
+      <td>Consulting</td>
+      <td>Admit</td>
+    </tr>
+    <tr>
+      <th>6175</th>
+      <td>6176</td>
+      <td>Female</td>
+      <td>False</td>
+      <td>3.38</td>
+      <td>Humanities</td>
+      <td>Hispanic</td>
+      <td>680.0</td>
+      <td>3.0</td>
+      <td>Technology</td>
+      <td>Admit</td>
+    </tr>
+    <tr>
+      <th>6177</th>
+      <td>6178</td>
+      <td>Male</td>
+      <td>False</td>
+      <td>3.35</td>
+      <td>Humanities</td>
+      <td>Hispanic</td>
+      <td>750.0</td>
+      <td>5.0</td>
+      <td>PE/VC</td>
+      <td>Admit</td>
+    </tr>
+    <tr>
+      <th>6191</th>
+      <td>6192</td>
+      <td>Female</td>
+      <td>True</td>
+      <td>3.22</td>
+      <td>Business</td>
+      <td>White</td>
+      <td>680.0</td>
+      <td>5.0</td>
+      <td>Health Care</td>
+      <td>Admit</td>
+    </tr>
+  </tbody>
+</table>
+<p>900 rows × 10 columns</p>
+</div>
+Output tersebut menampilkan banyak mahasiswa yang diterima
+
+## 9. Membuat Boxplot
+Saya membuat boxplot untuk kolom GMAT Score
+### Contoh Code
+```python
+plt.figure(figsize=(10, 6))
+sns.boxplot(y='gmat', data=mba, palette='Set2')
+plt.title('Boxplot of GMAT Score')
+plt.show()
+```
+Hasil Output : 
+![image](https://github.com/user-attachments/assets/a69dae47-be6f-4a4e-9dfc-0b975d6b0291)
+
+## 10. Correlation
+Pada correlation ini saya menggunakan Heatmap untuk menentukan korelasi setiap kolom
+### Contoh code
+```python
+# Step 1: Filter the dataframe to select only numerical columns
+numerical_columns = mba.select_dtypes(include=['number'])
+
+# Step 2: Calculate the correlation matrix for numerical variables only
+correlation_matrix = numerical_columns.corr()
+
+# Step 3: Display the correlation matrix
+print(correlation_matrix)
+
+# Step 4: Visualize the correlation matrix using a heatmap
+plt.figure(figsize=(10, 8))
+sns.heatmap(correlation_matrix, annot=True, cmap='coolwarm', linewidths=0.5)
+plt.title('Correlation Matrix of Numerical Variables')
+plt.show()
+```
+![image](https://github.com/user-attachments/assets/ea6490b3-f0eb-49aa-b7b6-04ff54e313e3)
 
