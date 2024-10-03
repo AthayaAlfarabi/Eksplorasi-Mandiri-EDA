@@ -428,3 +428,186 @@ mba.describe()
 </table>
 </div>
 Code tersebut berfungsi untuk memunculkan statistika deskriptif dataset tersebut
+
+## 3. Cek Nilai duplikat dan nilai unik
+Disini kita akan mengecek apakah ada nilai yang terduplikat dalam dataframe dan juga menemukan nilai unik pada setiap kolom pada dataframe
+
+### Contoh Kode
+```python
+mba.duplicated().sum()
+```
+output yang dikeluarkan :
+0, dikarenakan tidak ada data yang terduplikat
+
+### Contoh Kode
+```python
+# Loop untuk menampilkan value counts pada setiap kolom
+for column in mba.columns:
+    print(f"Value counts pada kolom '{column}':")
+    print(mba[column].value_counts(), "\n")
+```
+output yang dikeluarkan :
+Value counts pada kolom 'application_id':
+application_id
+1       1
+4162    1
+4136    1
+4135    1
+4134    1
+       ..
+2063    1
+2062    1
+2061    1
+2060    1
+6194    1
+Name: count, Length: 6194, dtype: int64 
+
+Value counts pada kolom 'gender':
+gender
+Male      3943
+Female    2251
+Name: count, dtype: int64 
+
+Value counts pada kolom 'international':
+international
+False    4352
+True     1842
+Name: count, dtype: int64 
+
+Value counts pada kolom 'gpa':
+gpa
+3.24    192
+3.21    170
+3.26    165
+3.27    165
+3.29    162
+       ... 
+2.73      1
+2.81      1
+2.79      1
+3.69      1
+2.65      1
+Name: count, Length: 101, dtype: int64 
+
+Value counts pada kolom 'major':
+major
+Humanities    2481
+STEM          1875
+Business      1838
+Name: count, dtype: int64 
+
+Value counts pada kolom 'race':
+race
+White       3298
+Asian       1147
+Black        916
+Hispanic     596
+Other        237
+Name: count, dtype: int64 
+
+Value counts pada kolom 'gmat':
+gmat
+660.0    483
+670.0    454
+650.0    451
+640.0    444
+620.0    439
+570.0    422
+630.0    417
+680.0    399
+610.0    381
+690.0    329
+600.0    313
+700.0    280
+590.0    260
+710.0    251
+580.0    212
+720.0    193
+730.0    125
+740.0    107
+750.0     78
+780.0     65
+760.0     60
+770.0     31
+Name: count, dtype: int64 
+
+Value counts pada kolom 'work_exp':
+work_exp
+5.0    2419
+6.0    1528
+4.0    1437
+3.0     369
+7.0     367
+8.0      38
+2.0      32
+9.0       2
+1.0       2
+Name: count, dtype: int64 
+
+Value counts pada kolom 'work_industry':
+work_industry
+Consulting               1619
+PE/VC                     907
+Technology                716
+Nonprofit/Gov             651
+Investment Banking        580
+Financial Services        451
+Other                     421
+Health Care               334
+Investment Management     166
+CPG                       114
+Real Estate               111
+Media/Entertainment        59
+Retail                     33
+Energy                     32
+Name: count, dtype: int64 
+
+Value counts pada kolom 'admission':
+admission
+decline     5194
+Admit        900
+Waitlist     100
+Name: count, dtype: int64 
+
+### Memvisualisasikan Nilai Unik Pada Kolom Race dan Gender
+```python
+# Visualisasi nilai unik pada kolom 'race' menggunakan count plot
+plt.figure(figsize=(8, 6))
+sns.countplot(x='race', data=mba, palette='viridis')
+plt.title('Frekuensi Nilai Unik pada Kolom "Race"')
+plt.xlabel('Nilai Unik')
+plt.ylabel('Jumlah')
+plt.show()
+
+# Visualisasi nilai unik pada kolom 'gender'
+plt.figure(figsize=(8, 6))
+sns.countplot(x='gender', data=mba, palette='viridis')
+plt.title('Frekuensi Nilai Unik pada Kolom "gender"')
+plt.xlabel('Nilai Unik')
+plt.ylabel('Jumlah')
+plt.show()
+```
+output yang dikeluarkan : 
+![image](https://github.com/user-attachments/assets/658ef3a5-3a71-43eb-b81e-0738defbb07d)
+![image](https://github.com/user-attachments/assets/1687dfac-b670-4015-b98c-d9323185b4d6)
+
+## Menemukan null values
+
+```python
+mba.isnull().sum()
+```
+## Output yang dikeluarkan : 
+### application_id       0
+### gender               0
+### international        0
+### gpa                  0
+### major                0
+### race              1842
+### gmat                 0
+### work_exp             0
+### work_industry        0
+### admission         5194
+### dtype: int64
+
+### kolom dengan nilai kosong ada 2, yaitu Race dan Admission
+
